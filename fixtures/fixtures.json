@@ -1,0 +1,18 @@
+[
+  {
+    "username": "Enaken",
+    "email": "jedi1@gmail.com",
+    "roles": ["user"]
+  },
+
+  {
+    "username": "Yoda",
+    "email": "jedi@gmail.com",
+    "roles": ["master", "admin"]
+  },
+  {
+    "username": "Obi-Wan",
+    "email": "kenobi@gmail.com",
+    "roles": ["master", "admin"]
+  }
+]
