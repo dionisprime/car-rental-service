@@ -9,20 +9,18 @@ const {
 } = require('../services/carService.js');
 
 const CarController = {
-  //   getAvailableCars: async (req, res) => {
-  //     try {
-  //       const { startDate, endDate } = req.query;
-  //       console.log('startDate: ', startDate);
+  getAvailableCars: async (req, res) => {
+    try {
+      const { startDate, endDate } = req.query;
 
-  //       // Находим все автомобили, которые не заняты в указанный период
-  //       const availableCars = await getAvailableCars();
+      const availableCars = await getAvailableCars(startDate, endDate);
 
-  //       res.status(200).json(availableCars);
-  //     } catch (error) {
-  //       console.error(error);
-  //       res.status(500).json({ message: 'Internal Server Error' });
-  //     }
-  //   },
+      res.status(200).json(availableCars);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send(`${ERROR_MESSAGE.GET_CARS_ERROR}: ${error.message}`);
+    }
+  },
 
   getAllCars: async (req, res) => {
     try {
@@ -90,7 +88,6 @@ const CarController = {
 
     try {
       const result = await deleteCar(carId);
-      console.log('result: ', result);
       if (!result) {
         res.status(404).send(ERROR_MESSAGE.CAR_NOT_FOUND);
       } else {

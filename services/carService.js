@@ -1,9 +1,20 @@
 const Car = require('../models/CarModel.js');
+const Rent = require('../models/RentModel.js');
 const { ERROR_MESSAGE } = require('../constants.js');
-const { DEFAULT_ROLES } = require('../constants.js');
 
-const getAvailableCars = () => {
-  return Car.find({});
+const getAvailableCars = async (startDate, endDate) => {
+  if (new Date(startDate) > new Date(endDate)) {
+    throw new Error(ERROR_MESSAGE.DATE_CONFLICT);
+  }
+
+  const rentedCarsIds = await Rent.distinct('car', {
+    startDate: { $lte: endDate },
+    endDate: { $gte: startDate },
+  });
+
+  return await Car.find({
+    _id: { $nin: rentedCarsIds },
+  });
 };
 
 const getAllCars = () => {

@@ -19,7 +19,6 @@ const userSchema = new mongoose.Schema({
     type: Array,
     required: true,
   },
-  activeRents: [{ type: 'ObjectId', ref: 'Rent' }],
 });
 
 const User = mongoose.model('User', userSchema);

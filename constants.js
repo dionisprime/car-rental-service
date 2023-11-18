@@ -1,17 +1,10 @@
 const PORT = process.env.PORT || 3000;
 const DB_CONNECTION_URL = process.env.DB_CONNECTION_URL;
-// const ONE_MONTH = 2629746000;
-// const DEFAULT_DEADLINE = new Date(Date.now() + ONE_MONTH);
 const DEFAULT_ROLES = ['user'];
 const ROLE = {
   ADMIN: 'admin',
   USER: 'user',
 };
-
-const STATUS = {};
-
-// const STATUSES = Object.values(STATUS);
-// const PRIORITIES = Object.values(PRIORITY);
 
 const ERROR_MESSAGE = {
   NOT_AUTHORIZED: 'Пользователь не авторизован, доступ запрещен',
@@ -39,6 +32,7 @@ const ERROR_MESSAGE = {
   EDIT_CAR_ERROR: 'Не удалось обновить автомобиль',
   DELETE_CAR_ERROR: 'Не удалось удалить авто',
   CAR_ALREADY_RENTED: 'Машина уже арендована!',
+  CAR_OCCUPIED: 'Машина уже арендована на указанные даты!',
 
   RENTS_NOT_FOUND: 'Записи об аренде не найдены',
   RENT_NOT_FOUND: 'Запись об аренде не найдена',
@@ -48,22 +42,20 @@ const ERROR_MESSAGE = {
 
   EDIT_CAR_ERROR: 'Не удалось обновить запись об аренде',
   DELETE_RENT_ERROR: 'Не удалось удалить запись об аренде',
+  DELETE_RENT_OK: 'Рента успешно отменена',
 
   ACCESS_GRANTED: 'Доступ разрешен',
   ACCESS_DENIED: 'Другой пользователь. Доступ запрещен',
   ID_NOT_MATCH: 'ID не совпадает',
 
   REQUIRED_FIELD: 'Обязательное поле!',
+
+  DATE_CONFLICT: 'Дата начала не может быть позже даты окончания',
 };
 
 module.exports = {
   PORT,
-  // STATUS,
-  // PRIORITY,
-  // STATUSES,
-  // PRIORITIES,
   DB_CONNECTION_URL,
-  // DEFAULT_DEADLINE,
   ERROR_MESSAGE,
   DEFAULT_ROLES,
   ROLE,

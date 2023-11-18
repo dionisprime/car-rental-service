@@ -11,12 +11,10 @@ const isVerified = async (req, res, next) => {
     }
 
     const isVerified = userInDataBase.isVerified;
-    console.log('isVerified: ', isVerified);
 
     if (!isVerified) {
       return res.status(401).send(ERROR_MESSAGE.USER_NOT_VERIFIED);
     }
-    console.log('hello verified user');
     next();
   } catch (error) {
     console.error(ERROR_MESSAGE.INCORRECT_VALUE, error.message);

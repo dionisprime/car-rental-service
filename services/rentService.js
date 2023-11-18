@@ -1,4 +1,19 @@
+const { ERROR_MESSAGE } = require('../constants.js');
 const Rent = require('../models/RentModel.js');
+
+const checkCarAvailability = (car, startDate, endDate) => {
+  if (new Date(startDate) > new Date(endDate)) {
+    throw new Error(ERROR_MESSAGE.DATE_CONFLICT);
+  }
+  // Проверяем, что машина доступна на указанные даты
+  return Rent.find({
+    car: car,
+    $or: [
+      { startDate: { $lte: endDate }, endDate: { $gte: startDate } }, // Новая аренда начинается до окончания старой
+      { startDate: { $lte: startDate }, endDate: { $gte: startDate } }, // Новая аренда заканчивается после начала старой
+    ],
+  });
+};
 
 const getAllRents = () => {
   return Rent.find({}).populate('car user');
@@ -23,4 +38,5 @@ module.exports = {
   getAllRents,
   getRentById,
   deleteRent,
+  checkCarAvailability,
 };

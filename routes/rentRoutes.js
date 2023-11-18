@@ -9,8 +9,5 @@ router.get('/', isAuth, RentController.getAllRents);
 router.get('/:rentId', isAuth, RentController.getRentById);
 router.post('/', isVerified, RentController.createRent);
 router.delete('/:rentId/cancel', isAuth, RentController.deleteRent);
-//----------------
-// router.post('/', isAdmin, RentController.addRentHistory);
-// router.delete('/:rentId', isAdmin, RentController.deleteRent);
 
 module.exports = router;

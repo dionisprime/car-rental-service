@@ -15,7 +15,6 @@ const isAuth = async (req, res, next) => {
     if (!isAdmin) {
       return res.status(401).send(ERROR_MESSAGE.NOT_ADMIN);
     }
-    console.log('hello admin');
     next();
   } catch (error) {
     console.error(ERROR_MESSAGE.INCORRECT_VALUE, error.message);

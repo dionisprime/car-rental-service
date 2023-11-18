@@ -4,8 +4,8 @@ const {
   getAllRents,
   getRentById,
   deleteRent,
+  checkCarAvailability,
 } = require('../services/rentService.js');
-const { getCarById, editCar } = require('../services/carService.js');
 
 const RentController = {
   getAllRents: async (req, res) => {
@@ -42,20 +42,23 @@ const RentController = {
   },
 
   createRent: async (req, res) => {
-    const user = req.headers.authorization;
     try {
+      const user = req.headers.authorization;
       const { car, startDate, endDate } = req.body;
 
-      const carInDataBase = await getCarById(car);
-      const isRented = carInDataBase.isRented;
+      // Проверяем, что машина доступна на указанные даты
+      const isCarAvailable = await checkCarAvailability(
+        car,
+        startDate,
+        endDate
+      );
 
-      if (isRented) {
-        return res.status(401).send(ERROR_MESSAGE.CAR_ALREADY_RENTED);
+      if (isCarAvailable.length > 0) {
+        return res.status(400).send(ERROR_MESSAGE.CAR_OCCUPIED);
       }
 
       const newRent = { car, user, startDate, endDate };
       const rent = await createRent(newRent);
-      await editCar(car, { isRented: true });
       res.status(201).send(`Rent ${rent} created successfully`);
     } catch (error) {
       console.error(ERROR_MESSAGE.ADD_RENT_ERROR, error);
@@ -67,18 +70,13 @@ const RentController = {
     const rentId = req.params.rentId;
 
     try {
-      const rentInDataBase = await getRentById(rentId);
-      const carId = rentInDataBase.car;
-
       const result = await deleteRent(rentId);
-      console.log('result: ', result);
 
       if (!result) {
         res.status(404).send(ERROR_MESSAGE.RENT_NOT_FOUND);
       }
 
-      await editCar(carId, { isRented: false });
-      res.status(200).send(`Рента ${result} успешно отменена. Авто свободен`);
+      res.status(200).send(`${ERROR_MESSAGE.DELETE_RENT_OK} ${result}`);
     } catch (error) {
       console.log(ERROR_MESSAGE.DELETE_RENT_ERROR, error.message);
       res

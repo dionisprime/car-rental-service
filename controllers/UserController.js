@@ -32,7 +32,7 @@ const UserController = {
       }
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: 'Internal Server Error' });
+      res.status(500).send(`${ERROR_MESSAGE.GET_USER_ERROR}: ${error.message}`);
     }
   },
 
@@ -120,7 +120,7 @@ const UserController = {
       if (!result) {
         res.status(404).send(ERROR_MESSAGE.USER_NOT_FOUND);
       } else {
-        res.status(200).send(`Юзер ${result} успешно удален`);
+        res.status(200).send(`User ${result} deleted successfully`);
       }
     } catch (error) {
       console.log(ERROR_MESSAGE.DELETE_USER_ERROR, error.message);
